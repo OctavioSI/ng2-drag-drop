@@ -5,7 +5,7 @@ import { Ng2DragDropService } from '../services/ng2-drag-drop.service';
 import { DomHelper } from '../shared/dom-helper';
 
 @Directive({
-    selector: '[droppable]'
+    selector: '[ng2-droppable]'
 })
 export class Droppable implements OnInit, OnDestroy {
 

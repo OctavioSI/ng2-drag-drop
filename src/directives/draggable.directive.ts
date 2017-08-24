@@ -3,7 +3,7 @@ import { Ng2DragDropService } from '../services/ng2-drag-drop.service';
 import { DomHelper } from '../shared/dom-helper';
 
 @Directive({
-    selector: '[draggable]'
+    selector: '[ng2-draggable]'
 })
 /**
  * Makes an element draggable by adding the draggable html attribute
