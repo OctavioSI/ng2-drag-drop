@@ -1,5 +1,5 @@
-import { Directive, ElementRef, HostListener, Input, Output, EventEmitter, OnInit, HostBinding } from '@angular/core';
-import { Ng2DragDropService } from '../services/ng2-drag-drop.service';
+import { Directive, ElementRef, HostListener, Input, Output, EventEmitter, OnInit, HostBinding, Renderer2, NgZone, OnDestroy } from '@angular/core';
+import { NgDragDropService } from '../services/ng-drag-drop.service';
 import { DomHelper } from '../shared/dom-helper';
 
 @Directive({
@@ -8,7 +8,7 @@ import { DomHelper } from '../shared/dom-helper';
 /**
  * Makes an element draggable by adding the draggable html attribute
  */
-export class Draggable implements OnInit {
+export class Draggable implements OnInit, OnDestroy {
     /**
      * The data that will be avaliable to the droppable directive on its `onDrop()` event.
      */
@@ -37,14 +37,19 @@ export class Draggable implements OnInit {
     @Input() dragHandleClass = 'drag-handle';
 
     /**
-     * CSS class applied on the draggable that is applied when the item is being dragged.
+     * CSS class applied on the source draggable element while being dragged.
      */
     @Input() dragClass = 'drag-border';
 
     /**
+     * CSS class applied on the drag ghost when being dragged.
+     */
+    @Input() dragTransitClass = 'drag-transit';
+
+    /**
      * The url to image that will be used as custom drag image when the draggable is being dragged.
      */
-    @Input() set dragImage( value: string) {
+    @Input() set dragImage(value: string) {
         this._dragImage = value;
         this.dragImageElement = new Image();
         this.dragImageElement.src = this.dragImage;
@@ -86,7 +91,7 @@ export class Draggable implements OnInit {
      * @private
      * Keeps track of mouse over element that is used to determine drag handles
      */
-    mouseOverElement: any;
+    mouseDownElement: any;
 
     /**
      * @private
@@ -106,17 +111,34 @@ export class Draggable implements OnInit {
      */
     dragImageElement: HTMLImageElement;
 
-    constructor(protected el: ElementRef, private ng2DragDropService: Ng2DragDropService) {
+    /**
+     * @private
+     * Function for unbinding the drag listener
+     */
+    unbindDragListener: Function;
+
+    constructor(protected el: ElementRef, private renderer: Renderer2,
+        private ng2DragDropService: NgDragDropService, private zone: NgZone) {
     }
 
     ngOnInit() {
         this.applyDragHandleClass();
     }
 
+    ngOnDestroy() {
+        this.unbindDragListeners();
+    }
+
     @HostListener('dragstart', ['$event'])
     dragStart(e) {
         if (this.allowDrag()) {
-            DomHelper.addClass(this.el, this.dragClass);
+
+            // This is a kludgy approach to apply CSS to the drag helper element when an image is being dragged. 
+            DomHelper.addClass(this.el, this.dragTransitClass);
+            setTimeout(() => {
+                DomHelper.addClass(this.el, this.dragClass);
+                DomHelper.removeClass(this.el, this.dragTransitClass);
+            }, 10);
 
             this.ng2DragDropService.dragData = this.dragData;
             this.ng2DragDropService.scope = this.dragScope;
@@ -135,18 +157,24 @@ export class Draggable implements OnInit {
             e.stopPropagation();
             this.onDragStart.emit(e);
             this.ng2DragDropService.onDragStart.next();
+
+            this.zone.runOutsideAngular(() => {
+                this.unbindDragListener = this.renderer.listen(this.el.nativeElement, 'drag', (dragEvent) => {
+                    this.drag(dragEvent);
+                });
+            });
         } else {
             e.preventDefault();
         }
     }
 
-    @HostListener('drag', ['$event'])
     drag(e) {
         this.onDrag.emit(e);
     }
 
     @HostListener('dragend', ['$event'])
     dragEnd(e) {
+        this.unbindDragListeners();
         DomHelper.removeClass(this.el, this.dragClass);
         this.ng2DragDropService.onDragEnd.next();
         this.onDragEnd.emit(e);
@@ -154,14 +182,15 @@ export class Draggable implements OnInit {
         e.preventDefault();
     }
 
-    @HostListener('mouseover', ['$event'])
-    mouseover(e) {
-        this.mouseOverElement = e.target;
+    @HostListener('mousedown', ['$event'])
+    @HostListener('touchstart', ['$event'])
+    mousedown(e) {
+        this.mouseDownElement = e.target;
     }
 
     private allowDrag() {
         if (this.dragHandle) {
-            return DomHelper.matches(this.mouseOverElement, this.dragHandle) && this.dragEnabled;
+            return DomHelper.matches(this.mouseDownElement, this.dragHandle) && this.dragEnabled;
         } else {
             return this.dragEnabled;
         }
@@ -169,6 +198,11 @@ export class Draggable implements OnInit {
 
     private applyDragHandleClass() {
         let dragElement = this.getDragHandleElement();
+
+        if (!dragElement) {
+            return;
+        }
+
         if (this.dragEnabled) {
             DomHelper.addClass(dragElement, this.dragHandleClass);
         } else {
@@ -183,5 +217,11 @@ export class Draggable implements OnInit {
         }
 
         return dragElement;
+    }
+
+    unbindDragListeners() {
+        if (this.unbindDragListener) {
+            this.unbindDragListener();
+        }
     }
 }

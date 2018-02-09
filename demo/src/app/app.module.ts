@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { DropScopeFunctionDemoComponent } from "./drop-scope-function-demo/drop-scope-function.component";
+import { DropScopeFunctionDemoComponent } from './drop-scope-function-demo/drop-scope-function.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 
@@ -9,19 +9,21 @@ import { DefaultCssComponent } from './default-css/default-css.component';
 import { DeleteItemComponent } from './delete-item/delete-item.component';
 import { SwapListComponent } from './swap-list/swap-list.component';
 import { CompleteDemoComponent } from './complete-demo/complete-demo.component';
+import { PerformanceDemoComponent } from './performance-demo/performance-demo.component';
 
-import { Ng2DragDropModule } from 'ng2-drag-drop';
+import { NgDragDropModule } from 'ng-drag-drop';
 
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, Ng2DragDropModule.forRoot()],
+  imports: [BrowserModule, FormsModule, NgDragDropModule.forRoot()],
   declarations: [DemoComponent,
   CompleteDemoComponent,
   SwapListComponent,
   DeleteItemComponent,
   DefaultCssComponent,
   DragHelperComponent,
-  DropScopeFunctionDemoComponent],
+  DropScopeFunctionDemoComponent,
+  PerformanceDemoComponent],
   bootstrap: [DemoComponent],
   providers: []
 })

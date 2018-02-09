@@ -1,27 +1,36 @@
-# Angular Drag & Drop (v2 and beyond)
+# Angular Drag & Drop
 
-[![Join the chat at https://gitter.im/ngx-drag-drop/Lobby](https://badges.gitter.im/ngx-drag-drop/Lobby.svg)](https://gitter.im/ngx-drag-drop/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![npm version](https://img.shields.io/npm/v/ng2-drag-drop.svg)](https://www.npmjs.com/package/ng2-drag-drop) [![npm downloads](https://img.shields.io/npm/dm/ng2-drag-drop.svg)](https://www.npmjs.com/package/ng2-drag-drop) [![Devdependency Status](https://david-dm.org/ObaidUrRehman/ng2-drag-drop/dev-status.svg)](https://david-dm.org/ObaidUrRehman/ng2-drag-drop#info=devDependencies) [![Build Status](https://travis-ci.org/ObaidUrRehman/ng2-drag-drop.svg?branch=master)](https://travis-ci.org/ObaidUrRehman/ng2-drag-drop) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f14c9c63579044e290d7d5cf9a9cda52)](https://www.codacy.com/app/orehman/ng2-drag-drop?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ObaidUrRehman/ng2-drag-drop&amp;utm_campaign=Badge_Grade)
+[![Join the chat at https://join.slack.com/t/ng-drag-drop/shared_invite/MjM5ODY5MDUyODY1LTE1MDUyOTk0OTMtNjFhZmJiOTE2Zg](https://img.shields.io/badge/chat-on_slack-ff69b4.svg)](https://join.slack.com/t/ng-drag-drop/shared_invite/MjM5ODY5MDUyODY1LTE1MDUyOTk0OTMtNjFhZmJiOTE2Zg)
+[![npm version](https://img.shields.io/npm/v/ng-drag-drop.svg)](https://www.npmjs.com/package/ng-drag-drop) [![npm downloads](https://img.shields.io/npm/dm/ng-drag-drop.svg)](https://www.npmjs.com/package/ng-drag-drop) [![Devdependency Status](https://david-dm.org/ObaidUrRehman/ng-drag-drop/dev-status.svg)](https://david-dm.org/ObaidUrRehman/ng-drag-drop#info=devDependencies) [![Build Status](https://travis-ci.org/ObaidUrRehman/ng-drag-drop.svg?branch=master)](https://travis-ci.org/ObaidUrRehman/ng-drag-drop) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/98ef19fdf92448d699bd93badd16e2f5)](https://www.codacy.com/app/orehman/ng-drag-drop?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ObaidUrRehman/ng-drag-drop&amp;utm_campaign=Badge_Grade)
 
-Drag & Drop for Angular 2 and beyond, based on HTML5 with no external dependencies. Provides `draggable` & `droppable` directives. Features:
+Drag & Drop for [Angular](http://angular.io), based on HTML5 with no external dependencies. Provides `draggable` & `droppable` directives. Features:
 * Transfer data from `draggable` to `droppable`.
 * Restrict drop based on drag-drop scopes.
 * Restrict drag to happen from either drag handles or the entire element.
 * Add custom drag Helper Image
 * Ability to add custom visual cue styles.
 
-![Demo](https://raw.githubusercontent.com/ObaidUrRehman/ng2-drag-drop/master/drag-drop.gif)
+![Demo](https://raw.githubusercontent.com/ObaidUrRehman/ng-drag-drop/master/drag-drop.gif)
+
+# Content
+
+1. [Demo](#demo)
+2. [Installation](#installation)
+3. [Usage](#usage)
+4. [Limitations](#limitations)
+5. [Development](#development)
+6. [API Doc](#api-doc)
 
 # Demo
 
 Check out the [Plunker demo](http://plnkr.co/edit/2bjGgzWnbFrciEiCKLew?p=preview).
 
 
-The [demo folder](https://github.com/ObaidUrRehman/ng2-drag-drop/tree/master/demo) of the repository contains the same demo as Plunkr that uses SystemJS. To run that demo do an `npm install` in that folder followed by `npm start` to serve the demo app.
+The [demo folder](https://github.com/ObaidUrRehman/ng-drag-drop/tree/master/demo) of the repository contains the same demo as Plunkr that uses SystemJS. To run that demo do an `npm install` in that folder followed by `npm start` to serve the demo app.
 
 # Installation
 ```js
-npm install ng2-drag-drop --save
+npm install ng-drag-drop --save
 ```
 
 # Usage
@@ -30,36 +39,36 @@ npm install ng2-drag-drop --save
 Import `style.css` into your index.html. It has a set of default styles that will be applied upon drag operations. This is totally optional and you can modify the styles as per your need. See the [Adding visual cues](#adding-visual-cues) Section.
 
 ```html
-<link rel="stylesheet" href="node_modules/ng2-drag-drop/style.css">
+<link rel="stylesheet" href="node_modules/ng-drag-drop/style.css">
 ```
 
 ### Update SystemJS config
-If you use SystemJS as your module loader then you will need to update the config to load the `ng2-drag-drop` module.
+If you use SystemJS as your module loader then you will need to update the config to load the `ng-drag-drop` module.
 ```js
 System.config({
     map: {
-        'ng2-drag-drop': 'node_modules/ng2-drag-drop'
+        'ng-drag-drop': 'node_modules/ng-drag-drop'
     },
     packages: {
-        'ng2-drag-drop':  { main: 'index.js',  defaultExtension: 'js' },
+        'ng-drag-drop':  { main: 'index.js',  defaultExtension: 'js' },
     }
 });
 ```
-### Import `Ng2DragDropModule`
+### Import `NgDragDropModule`
 
-You need to import the `Ng2DragDropModule` in the module of your app where you want to use it.
+You need to import the `NgDragDropModule` in the module of your app where you want to use it.
 
 ```js
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { DemoComponent } from "./components/demo-component";
-import { Ng2DragDropModule } from 'ng2-drag-drop';
+import { NgDragDropModule } from 'ng-drag-drop';
 
 
 @NgModule({
   imports: [
       BrowserModule, 
-      Ng2DragDropModule.forRoot()
+      NgDragDropModule.forRoot()
   ],
   declarations: [DemoComponent],
   bootstrap: [DemoComponent]
@@ -134,6 +143,18 @@ export class MyComponent {
 Notice how the function is defined as an [Arrow Function](https://www.typescriptlang.org/docs/handbook/functions.html). You need to do this so the
 lexical scope of `this` is preserved. You also get the `dragData` in the parameter so you can compare it with whatever you want.
 
+If `DropScope` is a function, it can also return an `Observable`, which needs to later resolve to `true` or `false`. This can help in cases when
+you need to check asynchronously (eg: via http) whether the drop is allowed.
+
+```js
+export class MyComponent {
+  val = 500;
+  isDropAllowed = (dragData: any) => {
+    // Resolves to true or false after 1 second
+    return Observable.of(dragData > this.val).delay(1000);
+  }
+}
+```
   
 ### Transfer Data via Drag Drop
 You can transfer data from the `draggable` to the `droppable` via the `dragData` property on the `draggable` directive. 
@@ -200,11 +221,14 @@ By default when an element is dragged, a translucent image is generated from the
 __Compatibility:__ This only works on Chrome & Firefox. Not supported on Edge.
 
 ### Adding visual cues
+![Demo](https://raw.githubusercontent.com/ObaidUrRehman/ng-drag-drop/master/ui-cue.gif)
+
 Both the `draggable` & `droppable` directives take a bunch of inputs that let you apply class on various events. You can find the list below. Another thing you can do is clone the `style.css` that comes with this package and customize it as per your requirement.
 
 __Draggable Directive__
 1. [dragHandleClass](#draggable-directive)
 2. [dragClass](#draggable-directive)
+3. [dragTransitClass](#draggable-directive)
 
 __Droppable Directive__
 1. [dragOverClass](#droppable-directive)
@@ -221,14 +245,17 @@ This library uses [Native Html5 drag & drop API](https://developer.mozilla.org/e
 
 So if you were to see the demo under Edge or Chrome/Firefox you'll see that these browsers show a different behaviour when an Item is being dragged. Simlarly Edge does not let you set a custom dragImage while others do. Another major issues is that we can't control the opacity of the ghost element of item being dragged.
 
-To overcome these issues we'll need to implement our own drag drop functionality instead of relying on the Native Html API which at this point in time, is beyond the scope of this component. Libraries like [Dragula](http://valor-software.com/ng2-dragula/), [JQuery Draggable](https://jqueryui.com/draggable/), [Interact.js](http://interactjs.io/) to name a few, can provide you with alternatives. 
+To overcome these issues we'll need to implement our own drag drop functionality instead of relying on the Native Html API which at this point in time, is beyond the scope of this component. Libraries like [Dragula](http://valor-software.com/ng2-dragula/), [JQuery Draggable](https://jqueryui.com/draggable/), [Interact.js](http://interactjs.io/) to name a few, can provide you with alternatives.
+
+## Touch Support
+HTML5 Drag drop is not touch supported but you can use the [DragDropTouch](https://github.com/Bernardo-Castilho/dragdroptouch) Polyfill.
 
 # Development
 To start the dev flow on your system, follow these steps:
 
 1. `npm install` on the root of this repo.
-2. `npm install` in the demo folder. This is where the demo app resides. Sort of a test & play yard for ng2-drag-drop package.
-3. Next you need to sym-link your package with the demo folder so your changes to the package are reflected in the demo app. Please remember the demo and the package are seperate apps & the demo app does not get published to npm. To link run `npm link` on the root of the repo followed by `npm link ng2-drag-drop` in demo folder. You can read more about `npm link` [here](https://docs.npmjs.com/cli/link).
+2. `npm install` in the demo folder. This is where the demo app resides. Sort of a test & play yard for ng-drag-drop package.
+3. Next you need to sym-link your package with the demo folder so your changes to the package are reflected in the demo app. Please remember the demo and the package are seperate apps & the demo app does not get published to npm. To link run `npm link` on the root of the repo followed by `npm link ng-drag-drop` in demo folder. You can read more about `npm link` [here](https://docs.npmjs.com/cli/link).
 4. Finally run `npm run dev` at the root. This will open up the demo app in browser.
 5. Now you can make changes to the actual component or the demo app and debug. Please note that changing the code of demo app will autoreload the browser but you'll need to manually refresh the page if you change the component code.
 
@@ -244,6 +271,7 @@ __Note:__ The steps are a bit involved at this time and will be simplified to an
 | `dragData`    |   `any` | `null` | The data that will be avaliable to the droppable directive on its `onDrop()` event. |
 | `dragScope`   |    `string | Array<string>` | `'default'`   |  Defines compatible drag drop pairs. Values must match with `droppable.dropScope`. |
 | `dragClass` (previously `dragOverClass`) | `string` | `'drag-border'` | CSS class applied on the draggable that is applied when the item is being dragged. |
+| `dragTransitClass` | `string` | `'drag-transit'` | CSS class applied on the drag helper translucent element clone. |
 | `dragHandleClass`  | `string` | `'drag-handle'` | The CSS class applied to a draggable element. If a dragHandle is defined then its applied to that handle element only. By default it is used to change the mouse over pointer. |
 | `draghandle` | `string` | `null` | The selector that defines the drag Handle. If defined drag will only be allowed if dragged from the selector element. |
 | `dragImage` | `string` | `null` | The url to image that will be used as custom drag image when the draggable is being dragged. |

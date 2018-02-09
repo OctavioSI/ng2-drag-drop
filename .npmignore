@@ -44,3 +44,10 @@ tsconfig.json
 _test-output
 systemconfig.js
 .editorconfig
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+*.tgz
+.github
+
+
+
